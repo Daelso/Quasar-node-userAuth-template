@@ -154,7 +154,7 @@ export default {
           console.log(registryInfo);
 
           axios
-            .post("https://localhost:3000/register", registryInfo)
+            .post("http://localhost:3000/register", registryInfo)
             .then((response) => console.log(response));
         }
       },
