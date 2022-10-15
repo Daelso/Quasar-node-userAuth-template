@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 var cors = require("cors");
@@ -51,7 +52,9 @@ app.post("/login", async (req, res) => {
   }
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      res.send("Logged in!");
+      const user = { username: req.body.username }; //creates user obj for the token
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET); //Must be created in your env
+      res.json({ accessToken: accessToken });
     } else {
       res.send("Login failed!");
     }
