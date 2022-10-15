@@ -2,20 +2,23 @@ GET http://localhost:3000/users
 
 ###
 
-POST http://localhost:3000/users
+POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "name": "Carl",
-  "password": "Memer22"
+      "username": "GlennyBalls",
+      "email": "fakemail22@gmail.com",
+      "password": "Gamer22!",
+      "age": 22,
+      "termsAccepted": true
 }
 
 ###
 
-POST http://localhost:3000/users/login
+POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "name": "Carl",
-  "password": "Mem2"
+  "username": "GlennyBalls",
+  "password": "Gamer22!"
 }

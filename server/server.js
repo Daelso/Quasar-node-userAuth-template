@@ -25,7 +25,9 @@ app.get("/users", async (req, res) => {
 
 app.post("/register", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    //Encrypts the password.
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     users.push({
       id: Date.now().toString(),
       username: req.body.username,
@@ -39,6 +41,23 @@ app.post("/register", async (req, res) => {
     res.status(500).send();
   }
   console.log(users);
+});
+
+app.post("/login", async (req, res) => {
+  //Authenticate users
+  const user = users.find((user) => (user.username = req.body.username));
+  if (user == null) {
+    return res.status(400).send("Cannot find user!");
+  }
+  try {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      res.send("Logged in!");
+    } else {
+      res.send("Login failed!");
+    }
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
