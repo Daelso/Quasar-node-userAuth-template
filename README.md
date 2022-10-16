@@ -8,8 +8,8 @@ ENV = "DEV"
 # or prod above, I use it to differentiate environments for annoying CORs issues on local dev
 PORT = 3000
 # whatever you want
-ACCESS_TOKEN_SECRET = yourtokenhere
-REFRESH_TOKEN_SECRET = yourtokenhere
+ACCESS_TOKEN_SECRET = yoursecrethere
+REFRESH_TOKEN_SECRET = yoursecrethere
 ```
 
 ## Install the dependencies
