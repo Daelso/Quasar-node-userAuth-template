@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
 const lib = require("./lib"); //This is all custom functions
-const connection = require("./database");
+const sql = require("./database");
 
 //for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
 if (process.env.ENV !== "prod") {
@@ -43,8 +43,8 @@ app.get("/posts", lib.authenticateToken, (req, res) => {
 
 app.listen(port, function () {
   console.log(`Server started on port ${port}`);
-  connection.connect((err) => {
+  sql.mysql.connect((err) => {
     if (err) throw err;
-    console.log("Database connected");
+    console.log("mySQL connected");
   });
 });

@@ -6,18 +6,24 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 let router = express.Router();
-const connection = require("../database");
+const db = require("../database");
+const Users = require("../models/Users");
+const { sequelize } = require("../database");
 
 //Route is base/user/
 
-const users = [];
-
 router.route("/users").get(async (req, res) => {
-  let sql = "SELECT * FROM login.users;";
-  connection.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result[0]);
-  });
+  // let sql = "SELECT * FROM login.users;";
+  // db.mysql.query(sql, (err, result) => {
+  //   if (err) throw err;
+  //   res.send(result[0]);
+  // });
+  Users.findAll()
+    .then((users) => {
+      console.log(users);
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
 });
 
 //Below are various controller links
@@ -26,19 +32,20 @@ router.route("/register").post(async (req, res) => {
     //Encrypts the password.
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    users.push({
-      id: Date.now().toString(),
+    Users.create({
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
       age: req.body.age,
-      termsAccepted: req.body.acceptance,
+      terms_accepted: req.body.acceptance,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     });
-    res.status(200).send("uploaded user");
-  } catch {
-    res.status(500).send();
+
+    res.status(200).send("User created successfully!");
+  } catch (err) {
+    res.status(500).send(err);
   }
-  console.log(users);
 });
 
 router.route("/login").post(async (req, res) => {
