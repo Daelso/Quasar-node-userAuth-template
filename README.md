@@ -9,7 +9,6 @@ PORT = 3000
 # whatever you want
 ACCESS_TOKEN_SECRET = yourtokenhere
 REFRESH_TOKEN_SECRET = yourtokenhere
-```
 
 ## Install the dependencies
 ```bash
