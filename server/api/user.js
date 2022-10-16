@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-var cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -12,15 +11,6 @@ let router = express.Router();
 //Route is base/user/
 
 const users = [];
-
-//for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
-if (process.env.ENV !== "prod") {
-  var corsOptions = {
-    origin: "http://localhost:8080",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  };
-  app.use(cors(corsOptions));
-}
 
 router.route("/users").get(async (req, res) => {
   res.send(users);

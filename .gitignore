@@ -2,7 +2,7 @@
 .thumbs.db
 node_modules
 .env
-.rest
+*.rest
 
 
 # Quasar core related directories
