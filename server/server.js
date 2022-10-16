@@ -8,6 +8,15 @@ app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
 const lib = require("./lib"); //This is all custom functions
 
+//for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
+if (process.env.ENV !== "prod") {
+  var corsOptions = {
+    origin: "http://localhost:8080",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  };
+  app.use(cors(corsOptions));
+}
+
 //Above is library imports, below begin route imports
 
 const userRoutes = require("./api/user");
@@ -24,15 +33,6 @@ const posts = [
     post: "I love this!",
   },
 ];
-
-//for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
-if (process.env.ENV !== "prod") {
-  var corsOptions = {
-    origin: "http://localhost:8080",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  };
-  app.use(cors(corsOptions));
-}
 
 //Below are various controller links
 
