@@ -1,19 +1,23 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const mysql = require("mysql");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 let router = express.Router();
+const connection = require("../database");
 
 //Route is base/user/
 
 const users = [];
 
 router.route("/users").get(async (req, res) => {
-  res.send(users);
+  let sql = "SELECT * FROM login.users;";
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
 });
 
 //Below are various controller links
