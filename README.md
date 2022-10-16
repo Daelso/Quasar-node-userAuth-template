@@ -10,6 +10,10 @@ PORT = 3000
 # whatever you want
 ACCESS_TOKEN_SECRET = yoursecrethere
 REFRESH_TOKEN_SECRET = yoursecrethere
+DB_HOST = "yourHostHere"
+DB_NAME = "yourDbNameHere"
+DB_USER = "yourSqlUser"
+DB_PASSWORD = "yourSqlPw"
 ```
 
 ## Install the dependencies
