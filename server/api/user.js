@@ -16,7 +16,7 @@ router.route("/users").get(async (req, res) => {
   let sql = "SELECT * FROM login.users;";
   connection.query(sql, (err, result) => {
     if (err) throw err;
-    res.send(result);
+    res.send(result[0]);
   });
 });
 
