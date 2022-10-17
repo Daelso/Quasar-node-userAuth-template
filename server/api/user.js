@@ -13,15 +13,9 @@ const { sequelize } = require("../database");
 //Route is base/user/
 
 router.route("/users").get(async (req, res) => {
-  // let sql = "SELECT * FROM login.users;";
-  // db.mysql.query(sql, (err, result) => {
-  //   if (err) throw err;
-  //   res.send(result[0]);
-  // });
   Users.findAll()
     .then((users) => {
-      console.log(users);
-      res.sendStatus(200);
+      res.status(200).send(users);
     })
     .catch((err) => console.log(err));
 });
@@ -32,7 +26,7 @@ router.route("/register").post(async (req, res) => {
     //Encrypts the password.
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    Users.create({
+    const newUser = await Users.create({
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
@@ -44,7 +38,7 @@ router.route("/register").post(async (req, res) => {
 
     res.status(200).send("User created successfully!");
   } catch (err) {
-    res.status(500).send(err);
+    res.status(403).send(err);
   }
 });
 
