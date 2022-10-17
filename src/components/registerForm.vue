@@ -137,12 +137,6 @@ export default {
               "You need to agree to the terms of account creation first!",
           });
         } else {
-          $q.notify({
-            color: "green-4",
-            textColor: "white",
-            icon: "cloud_done",
-            message: "Account successfully created!",
-          });
           let registryInfo = {
             username: userName.value,
             age: age.value,
@@ -150,12 +144,24 @@ export default {
             password: password.value,
             acceptance: accept.value,
           };
-
-          console.log(registryInfo);
-
           axios
             .post("http://localhost:3000/user/register", registryInfo)
-            .then((response) => console.log(response));
+            .then(() =>
+              $q.notify({
+                color: "green-4",
+                textColor: "white",
+                icon: "cloud_done",
+                message: "Account successfully created!",
+              })
+            )
+            .catch(() =>
+              $q.notify({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: "Email/Username already in use!",
+              })
+            );
         }
       },
 
