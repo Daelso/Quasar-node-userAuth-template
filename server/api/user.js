@@ -9,8 +9,6 @@ let router = express.Router();
 const db = require("../database");
 const Users = require("../models/Users");
 const { sequelize } = require("../database");
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 //Route is base/user/
 
