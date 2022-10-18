@@ -1,18 +1,19 @@
 const express = require("express");
 require("dotenv").config();
-var cors = require("cors");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const lib = require("./lib"); //This is all custom functions
 const sql = require("./database");
 
 //for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
 if (process.env.ENV !== "prod") {
-  var corsOptions = {
-    origin: "http://localhost:8080",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  let corsOptions = {
+    origin: ["http://localhost:8080"],
+    credentials: true,
+    optionsSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
 }
