@@ -159,7 +159,7 @@ export default {
                 color: "red-5",
                 textColor: "white",
                 icon: "warning",
-                message: "Email/Username already in use!",
+                message: "Email or username already taken!",
               })
             );
         }

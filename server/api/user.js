@@ -9,6 +9,8 @@ let router = express.Router();
 const db = require("../database");
 const Users = require("../models/Users");
 const { sequelize } = require("../database");
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 //Route is base/user/
 
@@ -44,19 +46,29 @@ router.route("/register").post(async (req, res) => {
 
 router.route("/login").post(async (req, res) => {
   //Authenticate users
-  const user = users.find((user) => (user.username = req.body.username));
+  const user = await Users.findOne({ where: { email: req.body.email } });
+
   if (user == null) {
     return res.status(400).send("Cannot find user!");
   }
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      const user = { username: req.body.username }; //creates user obj for the token
-      const accessToken = generateAccessToken(user);
-      const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-      res.json({ accessToken: accessToken, refreshToken: refreshToken });
-      refreshTokens.push(refreshToken);
+      const userInfo = {
+        username: user.username,
+        email: user.email,
+        age: user.age,
+      };
+      const accessToken = generateAccessToken(userInfo);
+
+      const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET);
+      const cookie = await res.cookie("token", accessToken, {
+        maxAge: 300000,
+        secure: true,
+        httpOnly: true,
+      });
+      res.status(200).send("Logged in!");
     } else {
-      res.send("Login failed!");
+      res.send("Incorrect email or password!");
     }
   } catch {
     res.status(500).send();
@@ -83,7 +95,7 @@ router.route("/logout").delete((req, res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 }
 
 module.exports = router; //Exports our routes
