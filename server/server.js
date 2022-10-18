@@ -4,11 +4,11 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 const port = process.env.PORT || 8080;
 const lib = require("./lib"); //This is all custom functions
 const sql = require("./database");
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 
 //for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
 if (process.env.ENV !== "prod") {
