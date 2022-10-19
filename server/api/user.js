@@ -9,6 +9,7 @@ let router = express.Router();
 const db = require("../database");
 const Users = require("../models/Users");
 const { sequelize } = require("../database");
+const lib = require("../lib");
 
 //Route is base/user/
 
@@ -52,17 +53,25 @@ router.route("/login").post(async (req, res) => {
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
       const userInfo = {
+        id: user.user_id,
         username: user.username,
         email: user.email,
         age: user.age,
       };
-      const accessToken = generateAccessToken(userInfo);
+      const accessToken = lib.generateAccessToken(userInfo);
 
       const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET);
-      const cookie = await res.cookie("token", accessToken, {
+      const accessCookie = await res.cookie("access", accessToken, {
         maxAge: 300000,
         secure: true,
         httpOnly: true,
+        sameSite: "none",
+      });
+      const refreshCookie = await res.cookie("refresh", refreshToken, {
+        maxAge: 7.884e9,
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
       });
       res.status(200).send("Logged in!");
     } else {
@@ -73,27 +82,33 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-let refreshTokens = [];
-router.route("/token").post((req, res) => {
-  const refreshToken = req.body.token;
+router.route("/token").get((req, res) => {
+  const refreshToken = req.cookies.refresh;
 
   if (refreshToken == null) return res.sendStatus(401);
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    const accessToken = generateAccessToken({ username: user.username });
-    res.json({ accessToken: accessToken });
-  });
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, user) => {
+      if (err) return res.sendStatus(403).send("Invalid refresh token!");
+      const accessToken = lib.generateAccessToken(user);
+      res.clearCookie("access");
+      const accessCookie = await res.cookie("access", accessToken, {
+        maxAge: 300000,
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
+      });
+      res.status(200).send("Token refreshed");
+    }
+  );
 });
 
 router.route("/logout").delete((req, res) => {
-  refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
-
+  res.clearCookie("access");
+  res.clearCookie("refresh");
   res.sendStatus(204);
 });
-
-function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
-}
 
 module.exports = router; //Exports our routes

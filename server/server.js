@@ -40,7 +40,6 @@ const posts = [
 //Below are various controller links
 
 app.get("/posts", lib.authenticateToken, (req, res) => {
-  console.log(req.user.username);
   res.json(posts);
 });
 
