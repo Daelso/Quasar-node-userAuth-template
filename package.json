@@ -14,7 +14,6 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "start": "node server/server.js",
     "heroku-postbuild": "yarn && yarn build",
-    "postinstall": "npm run build",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
