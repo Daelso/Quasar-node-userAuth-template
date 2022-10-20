@@ -119,6 +119,13 @@ export default {
     const age = ref(null);
     const accept = ref(false);
 
+    let baseUrl = "";
+    if (window.location.href.includes("localhost")) {
+      baseUrl = "http://localhost:5000/";
+    } else {
+      baseUrl = window.location.href;
+    }
+
     return {
       userName,
       email,
@@ -145,7 +152,7 @@ export default {
             acceptance: accept.value,
           };
           axios
-            .post("http://localhost:3000/user/register", registryInfo)
+            .post(baseUrl + "user/register", registryInfo)
             .then(() =>
               $q.notify({
                 color: "green-4",
