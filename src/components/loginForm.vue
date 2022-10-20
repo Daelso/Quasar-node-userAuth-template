@@ -60,7 +60,7 @@ export default {
           password: password.value,
         };
         axios
-          .post("http://localhost:3000/user/login", loginInfo, {
+          .post("http://localhost:5000/user/login", loginInfo, {
             withCredentials: true,
           })
           .then(() =>
