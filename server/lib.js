@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
         process.env.REFRESH_TOKEN_SECRET,
         async (err, user) => {
           if (err) return res.sendStatus(403).send("Invalid refresh token!");
-          let newToken = jwt.sign(
+          const newToken = jwt.sign(
             {
               username: user.username,
               email: user.email,
@@ -31,11 +31,15 @@ const authenticateToken = (req, res, next) => {
           });
         }
       );
-      jwt.verify(newToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.send(err);
-        console.log(user);
-        next();
-      });
+      jwt.verify(
+        req.cookies.access,
+        process.env.ACCESS_TOKEN_SECRET,
+        (err, user) => {
+          if (err) return res.send(err);
+          console.log(user);
+          return next();
+        }
+      );
     }
   }
 
