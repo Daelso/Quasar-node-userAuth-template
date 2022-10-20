@@ -20,7 +20,7 @@ export default {
 
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
-      baseUrl = "http://localhost:5000/";
+      baseUrl = "http://localhost:5000";
     } else {
       baseUrl = window.location.origin;
     }
@@ -28,7 +28,7 @@ export default {
     return {
       onSubmit() {
         axios
-          .get(baseUrl + "posts", {
+          .get(baseUrl + "/posts", {
             withCredentials: true,
           })
           .then((resp) => {

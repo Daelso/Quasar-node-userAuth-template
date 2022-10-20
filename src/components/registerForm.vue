@@ -121,7 +121,7 @@ export default {
 
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
-      baseUrl = "http://localhost:5000/";
+      baseUrl = "http://localhost:5000";
     } else {
       baseUrl = window.location.origin;
     }
@@ -152,7 +152,7 @@ export default {
             acceptance: accept.value,
           };
           axios
-            .post(baseUrl + "user/register", registryInfo)
+            .post(baseUrl + "/user/register", registryInfo)
             .then(() =>
               $q.notify({
                 color: "green-4",
