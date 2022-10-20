@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-const lib = require("./lib"); //This is all custom functions
-const sql = require("./database");
+const lib = require("./server/lib"); //This is all custom functions
+const sql = require("./server/database");
 
 //for dev use only, very insecure in a prod env, this is just to prevent CORS errors. Origin is your vue clients port
 if (process.env.ENV !== "prod") {
@@ -27,7 +27,7 @@ if (process.env.ENV !== "prod") {
 
 //Above is library imports, below begin route imports
 
-const userRoutes = require("./api/user");
+const userRoutes = require("./server/api/user");
 app.use("/user", userRoutes);
 //Uses userRoutes file to handle all user related endpoints
 

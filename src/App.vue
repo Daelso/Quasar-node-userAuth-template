@@ -8,14 +8,14 @@ import axios from "axios";
 
 //Generates a new access token on every page from existing refresh token
 axios.post(
-  "http://localhost:3000/user/token",
+  "http://localhost:5000/user/token",
   {},
   {
     withCredentials: true,
   }
 );
 
-axios.get("http://localhost:3000/posts", {
+axios.get("http://localhost:5000/posts", {
   withCredentials: true,
 });
 
