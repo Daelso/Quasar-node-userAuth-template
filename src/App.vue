@@ -6,18 +6,21 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 
+let baseUrl = "";
+if (window.location.href.includes("localhost")) {
+  baseUrl = "http://localhost:5000/";
+} else {
+  baseUrl = window.location.href;
+}
+
 //Generates a new access token on every page from existing refresh token
 axios.post(
-  "http://localhost:5000/user/token",
+  baseUrl + "user/token",
   {},
   {
     withCredentials: true,
   }
 );
-
-axios.get("http://localhost:5000/posts", {
-  withCredentials: true,
-});
 
 export default defineComponent({
   name: "App",

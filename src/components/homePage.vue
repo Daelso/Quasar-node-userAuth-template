@@ -18,10 +18,17 @@ export default {
     const $q = useQuasar();
     const axios = require("axios");
 
+    let baseUrl = "";
+    if (window.location.href.includes("localhost")) {
+      baseUrl = "http://localhost:5000/";
+    } else {
+      baseUrl = window.location.href;
+    }
+
     return {
       onSubmit() {
         axios
-          .get("http://localhost:5000/posts", {
+          .get(baseUrl + "posts", {
             withCredentials: true,
           })
           .then((resp) => {
