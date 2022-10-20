@@ -48,6 +48,6 @@ app.get("/posts", lib.authenticateToken, (req, res) => {
   res.json(posts);
 });
 
-app.listen(port, function () {
+app.listen(process.env.PORT || 5000, function () {
   console.log(`Server started on port ${port}`);
 });
