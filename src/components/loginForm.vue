@@ -53,7 +53,7 @@ export default {
     if (window.location.href.includes("localhost")) {
       baseUrl = "http://localhost:5000";
     } else {
-      baseUrl = window.location.href;
+      baseUrl = window.location.origin;
     }
 
     return {
