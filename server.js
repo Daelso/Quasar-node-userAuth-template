@@ -23,6 +23,13 @@ if (process.env.ENV !== "prod") {
     optionsSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
+} else {
+  let corsOptions = {
+    origin: ["https://wod-char-maker.herokuapp.com/"],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
 }
 
 //Above is library imports, below begin route imports
