@@ -51,7 +51,7 @@ export default {
     const password = ref(null);
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
-      baseUrl = "http://localhost:5000/";
+      baseUrl = "http://localhost:5000";
     } else {
       baseUrl = window.location.href;
     }
@@ -66,7 +66,7 @@ export default {
           password: password.value,
         };
         axios
-          .post(baseUrl + "user/login", loginInfo, {
+          .post(baseUrl + "/user/login", loginInfo, {
             withCredentials: true,
           })
           .then(() =>

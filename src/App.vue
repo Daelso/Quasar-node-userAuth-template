@@ -8,14 +8,14 @@ import axios from "axios";
 
 let baseUrl = "";
 if (window.location.href.includes("localhost")) {
-  baseUrl = "http://localhost:5000/";
+  baseUrl = "http://localhost:5000";
 } else {
-  baseUrl = window.location.href;
+  baseUrl = window.location.origin;
 }
 
 //Generates a new access token on every page from existing refresh token
 axios.post(
-  baseUrl + "user/token",
+  baseUrl + "/user/token",
   {},
   {
     withCredentials: true,
