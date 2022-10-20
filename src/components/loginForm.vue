@@ -49,6 +49,12 @@ export default {
     const axios = require("axios");
     const email = ref(null);
     const password = ref(null);
+    let baseUrl = "";
+    if (window.location.href.includes("localhost")) {
+      baseUrl = "http://localhost:5000/";
+    } else {
+      baseUrl = window.location.href;
+    }
 
     return {
       email,
@@ -60,7 +66,7 @@ export default {
           password: password.value,
         };
         axios
-          .post("http://localhost:5000/user/login", loginInfo, {
+          .post(baseUrl + "user/login", loginInfo, {
             withCredentials: true,
           })
           .then(() =>
