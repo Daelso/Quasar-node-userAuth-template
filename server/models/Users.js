@@ -28,10 +28,6 @@ const Users = db.sequelize.define("users", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  refresh_token: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
   createdAt: {
     type: Sequelize.DATE,
     allowNull: false,
