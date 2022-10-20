@@ -6,7 +6,7 @@
   "author": "Chase Murtaugh <Chasemurtaugh@gmail.com>",
   "private": true,
   "scripts": {
-    "build": "quasar build",
+    "build": "npx quasar build -m ssr",
     "dev": "quasar dev",
     "devStart": "nodemon server/server.js",
     "devStartAuth": "nodemon server/authServer.js",
