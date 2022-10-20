@@ -1,13 +1,17 @@
-const express = require("express");
+const express = require("express"),
+  serveStatic = require("serve-static"),
+  history = require("connect-history-api-fallback"),
+  port = process.env.PORT || 3000;
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
+app.use(history());
+app.use(serveStatic(__dirname + "/dist/spa"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-const port = process.env.PORT || 8080;
 const lib = require("./lib"); //This is all custom functions
 const sql = require("./database");
 
