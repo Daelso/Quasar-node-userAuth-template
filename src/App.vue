@@ -7,17 +7,15 @@ import { defineComponent } from "vue";
 import axios from "axios";
 
 //Generates a new access token on every page from existing refresh token
-console.log(window.location.origin);
-let baseUrl = window.location.origin;
 axios.post(
-  baseUrl + "/user/token",
+  "http://localhost:5000/user/token",
   {},
   {
     withCredentials: true,
   }
 );
 
-axios.get(baseUrl + "posts", {
+axios.get("http://localhost:5000/posts", {
   withCredentials: true,
 });
 
