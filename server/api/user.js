@@ -59,7 +59,7 @@ router.route("/login").post(async (req, res) => {
         age: user.age,
       };
       const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: 1.5e6,
+        expiresIn: "1d",
       });
 
       const refreshToken = jwt.sign(
@@ -70,7 +70,7 @@ router.route("/login").post(async (req, res) => {
         }
       );
       const accessCookie = await res.cookie("access", accessToken, {
-        maxAge: 1.5e6,
+        maxAge: 8.64e7,
         secure: true,
         httpOnly: true,
         sameSite: "none",
@@ -104,7 +104,7 @@ router.route("/token").post(async (req, res) => {
       let newToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
       const newCookie = await res.cookie("access", newToken, {
-        maxAge: 1.5e6,
+        maxAge: 8.64e7,
         secure: true,
         httpOnly: true,
         sameSite: "none",
