@@ -7,9 +7,13 @@ import { defineComponent } from "vue";
 import axios from "axios";
 
 //Generates a new access token on every page from existing refresh token
-axios.get("http://localhost:3000/user/token", {
-  withCredentials: true,
-});
+axios.post(
+  "http://localhost:3000/user/token",
+  {},
+  {
+    withCredentials: true,
+  }
+);
 
 axios.get("http://localhost:3000/posts", {
   withCredentials: true,

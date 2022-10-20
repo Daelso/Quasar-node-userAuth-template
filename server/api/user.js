@@ -58,11 +58,19 @@ router.route("/login").post(async (req, res) => {
         email: user.email,
         age: user.age,
       };
-      const accessToken = lib.generateAccessToken(userInfo);
+      const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: 1.5e6,
+      });
 
-      const refreshToken = jwt.sign(userInfo, process.env.REFRESH_TOKEN_SECRET);
+      const refreshToken = jwt.sign(
+        userInfo,
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: "90d",
+        }
+      );
       const accessCookie = await res.cookie("access", accessToken, {
-        maxAge: 300000,
+        maxAge: 1.5e6,
         secure: true,
         httpOnly: true,
         sameSite: "none",
@@ -82,7 +90,8 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route("/token").get((req, res) => {
+router.route("/token").post(async (req, res) => {
+  res.clearCookie("access");
   const refreshToken = req.cookies.refresh;
 
   if (refreshToken == null) return res.sendStatus(401);
@@ -92,15 +101,15 @@ router.route("/token").get((req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     async (err, user) => {
       if (err) return res.sendStatus(403).send("Invalid refresh token!");
-      const accessToken = lib.generateAccessToken(user);
-      res.clearCookie("access");
-      const accessCookie = await res.cookie("access", accessToken, {
-        maxAge: 300000,
+      let newToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+
+      const newCookie = await res.cookie("access", newToken, {
+        maxAge: 1.5e6,
         secure: true,
         httpOnly: true,
         sameSite: "none",
       });
-      res.status(200).send("Token refreshed");
+      res.status(200).send(`Token refreshed`);
     }
   );
 });
