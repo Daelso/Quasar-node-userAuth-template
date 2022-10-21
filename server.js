@@ -52,7 +52,7 @@ const posts = [
 //Below are various controller links
 
 app.get("/posts", lib.authenticateToken, (req, res) => {
-  res.json(posts);
+  res.json(req.currentUser);
 });
 
 app.listen(process.env.PORT || 5000, function () {
