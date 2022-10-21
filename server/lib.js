@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+
 //Other imports above
 
 const authenticateToken = (req, res, next) => {
