@@ -30,6 +30,7 @@ const authenticateToken = (req, res, next) => {
             httpOnly: true,
             sameSite: "None",
           });
+          req.currentUser = user;
         }
       );
     }
@@ -38,6 +39,7 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.send(err);
     console.log(user);
+    req.currentUser = user;
     next();
   });
 };
