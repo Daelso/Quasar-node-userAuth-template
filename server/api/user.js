@@ -1,12 +1,14 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const app = express();
+let router = express.Router();
+router.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-let router = express.Router();
-const db = require("../database");
 const Users = require("../models/Users");
 const { sequelize } = require("../database");
 const lib = require("../lib");
@@ -127,6 +129,39 @@ router.route("/logout").delete((req, res) => {
   res.clearCookie("access");
   res.clearCookie("refresh");
   res.sendStatus(204);
+});
+
+router.route("/passwordReset").post(async (req, res) => {
+  try {
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      auth: {
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASSWORD,
+      },
+    });
+
+    transporter.verify().then(console.log).catch(console.error);
+
+    let mailOptions = {
+      from: `SchreckNet <${process.env.MAILER_USER}>`,
+      to: req.body.email,
+      subject: "testing the emailer",
+      text: "Holy poop it worked",
+    };
+
+    transporter.sendMail(mailOptions, function (err, succ) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Email sent successfully.");
+      }
+    });
+    res.status(200).send("Email sent!");
+  } catch (err) {
+    res.status(403).send(err);
+  }
 });
 
 module.exports = router; //Exports our routes

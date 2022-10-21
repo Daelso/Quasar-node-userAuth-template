@@ -1,8 +1,14 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
     <q-btn
-      label="View User"
+      label="View Current User"
       v-on:click="onSubmit()"
+      type="submit"
+      color="primary"
+    />
+    <q-btn
+      label="Send Test Email"
+      v-on:click="sendEmail()"
       type="submit"
       color="primary"
     />
@@ -34,6 +40,33 @@ export default {
           .then((resp) => {
             console.log(resp.data);
           });
+      },
+
+      sendEmail() {
+        axios
+          .post(
+            baseUrl + "/user/passwordReset",
+            { email: "chasemurtaugh@gmail.com" },
+            {
+              withCredentials: true,
+            }
+          )
+          .then(() =>
+            $q.notify({
+              color: "green-4",
+              textColor: "white",
+              icon: "cloud_done",
+              message: "Email sent!",
+            })
+          )
+          .catch(() =>
+            $q.notify({
+              color: "red-5",
+              textColor: "white",
+              icon: "warning",
+              message: "Email failed to send!",
+            })
+          );
       },
     };
   },
