@@ -14,6 +14,8 @@ DB_HOST = "yourHostHere"
 DB_NAME = "yourDbNameHere"
 DB_USER = "yourSqlUser"
 DB_PASSWORD = "yourSqlPw"
+MAILER_USER = "yourmaileruser"
+MAILER_PASSWORD = "yourmailerpw"
 ```
 
 ## Install the dependencies
