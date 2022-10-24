@@ -16,6 +16,7 @@ DB_USER = "yourSqlUser"
 DB_PASSWORD = "yourSqlPw"
 MAILER_USER = "yourmaileruser"
 MAILER_PASSWORD = "yourmailerpw"
+RESET_TOKEN_SECRET = yourresetsecret
 ```
 
 ## Install the dependencies
