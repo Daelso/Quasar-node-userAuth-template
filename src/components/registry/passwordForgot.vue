@@ -1,5 +1,9 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
+    <div style="margin-bottom: 20px">
+      Enter your email below to reset your password. You will receive an email
+      with a link that must be used within 30 minutes to recover your account.
+    </div>
     <q-form @submit="onSubmit" class="q-gutter-md">
       <q-input
         filled
@@ -18,21 +22,12 @@
         ]"
       />
 
-      <q-input
-        filled
-        v-model="password"
-        type="password"
-        label="Your password *"
-      />
-
-      <div>
-        <q-btn label="Submit" type="submit" color="primary" />
+      <div class="q-pa-md">
         <q-btn
-          label="Reset"
-          type="reset"
+          label="Recover Account"
+          type="submit"
           color="primary"
-          flat
-          class="q-ml-sm"
+          icon="mail"
         />
       </div>
     </q-form>
@@ -58,15 +53,13 @@ export default {
 
     return {
       email,
-      password,
 
       onSubmit() {
         let loginInfo = {
           email: email.value,
-          password: password.value,
         };
         axios
-          .post(baseUrl + "/user/login", loginInfo, {
+          .post(baseUrl + "/user/passwordForgot", loginInfo, {
             withCredentials: true,
           })
           .then(() =>
@@ -74,7 +67,7 @@ export default {
               color: "green-4",
               textColor: "white",
               icon: "cloud_done",
-              message: "Account successfully created!",
+              message: "Recovery email sent!",
             })
           )
           .catch(() =>
@@ -82,7 +75,7 @@ export default {
               color: "red-5",
               textColor: "white",
               icon: "warning",
-              message: "Email or username already taken!",
+              message: "Email not found!",
             })
           );
       },

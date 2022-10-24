@@ -85,7 +85,7 @@ router.route("/login").post(async (req, res) => {
       });
       res.status(200).send("Logged in!");
     } else {
-      res.send("Incorrect email or password!");
+      res.status(401).send("Incorrect email or password!");
     }
   } catch {
     res.status(500).send();
@@ -131,8 +131,51 @@ router.route("/logout").delete((req, res) => {
   res.sendStatus(204);
 });
 
-router.route("/passwordReset").post(async (req, res) => {
-  mailer.sendResetEmail(req.body.email);
+router.route("/passwordForgot").post(async (req, res) => {
+  const resetUser = await Users.findOne({ where: { email: req.body.email } });
+  if (resetUser === null) {
+    return res.sendStatus(404);
+  }
+  const secret = process.env.RESET_TOKEN_SECRET + resetUser.get("password"); //generates a new secret unique to a user.
+  const payload = { username: resetUser.get("user_id") };
+  const token = jwt.sign(payload, secret, { expiresIn: "30m" }); //users get 30 mins to reset their account
+
+  let resetLink = null;
+  if (process.env.ENV === "DEV") {
+    resetLink = `http://localhost:8080/passwordReset/${resetUser.get(
+      "user_id"
+    )}?token=${token}`;
+  } else {
+    resetLink = `https://wod-char-maker.herokuapp.com/passwordReset/${resetUser.get(
+      "user_id"
+    )}?token=${token}`;
+  }
+
+  mailer.sendResetEmail(req.body.email, resetUser.get("username"), resetLink);
+  res.sendStatus(200);
+});
+
+router.route("/passwordReset/:user/:token").post(async (req, res) => {
+  res.clearCookie("access");
+  res.clearCookie("refresh");
+
+  console.log(req.body.password);
+  console.log(req.params);
+  const resetUser = await Users.findByPk(req.params.user);
+  if (resetUser === null) {
+    return sendStatus(404);
+  }
+
+  const secret = process.env.RESET_TOKEN_SECRET + resetUser.get("password");
+  try {
+    const payload = jwt.verify(req.params.token, secret);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    await resetUser.update({ password: hashedPassword });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send(err.message);
+  }
   res.sendStatus(200);
 });
 

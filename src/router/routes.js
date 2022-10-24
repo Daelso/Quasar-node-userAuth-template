@@ -11,12 +11,22 @@ const routes = [
       {
         name: "register",
         path: "/register",
-        component: () => import("pages/registerPage.vue"),
+        component: () => import("pages/registry/registerPage.vue"),
       },
       {
         name: "login",
         path: "/login",
-        component: () => import("pages/loginPage.vue"),
+        component: () => import("pages/registry/loginPage.vue"),
+      },
+      {
+        name: "passwordForgot",
+        path: "passwordForgot",
+        component: () => import("pages/registry/passwordForgot.vue"),
+      },
+      {
+        name: "passwordReset",
+        path: "passwordReset/:user",
+        component: () => import("pages/registry/passwordReset.vue"),
       },
     ],
   },
