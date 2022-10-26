@@ -87,7 +87,7 @@
 
       <q-toggle
         v-model="accept"
-        label="I hereby certify that I am above the age of 18 and will obey site-wide rules or risk the loss of my account."
+        label="I hereby certify that I have read, understand and agree to the terms of use and privacy policy."
       />
 
       <div>
@@ -107,6 +107,7 @@
 <script>
 import { useQuasar } from "quasar";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
@@ -118,6 +119,7 @@ export default {
     const passwordVerify = ref(null);
     const age = ref(null);
     const accept = ref(false);
+    const router = useRouter();
 
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
@@ -161,6 +163,9 @@ export default {
                 message: "Account successfully created!",
               })
             )
+            .then(() => {
+              router.push({ name: "login" });
+            })
             .catch(() =>
               $q.notify({
                 color: "red-5",

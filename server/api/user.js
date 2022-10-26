@@ -39,6 +39,19 @@ router.route("/register").post(async (req, res) => {
       updatedAt: Date.now(),
     });
 
+    const secret = process.env.ACTIVATION_TOKEN_SECRET + hashedPassword; //generates a new secret unique to a user.
+    const payload = { username: req.body.username };
+    const token = jwt.sign(payload, secret, { expiresIn: "7d" }); //activation good for a week
+
+    let activateLink = null;
+    if (process.env.ENV === "DEV") {
+      activateLink = `http://localhost:8080/activateAccount?token=${token}&username=${req.body.username}`;
+    } else {
+      activateLink = `https://wod-char-maker.herokuapp.com/activateAccount?token=${token}&username=${req.body.username}`;
+    }
+
+    mailer.sendActivationEmail(req.body.email, req.body.username, activateLink);
+
     res.status(200).send("User created successfully!");
   } catch (err) {
     res.status(403).send(err);
@@ -87,8 +100,9 @@ router.route("/login").post(async (req, res) => {
     } else {
       res.status(401).send("Incorrect email or password!");
     }
-  } catch {
-    res.status(500).send();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
   }
 });
 
@@ -159,8 +173,6 @@ router.route("/passwordReset/:user/:token").post(async (req, res) => {
   res.clearCookie("access");
   res.clearCookie("refresh");
 
-  console.log(req.body.password);
-  console.log(req.params);
   const resetUser = await Users.findByPk(req.params.user);
   if (resetUser === null) {
     return sendStatus(404);
@@ -172,6 +184,54 @@ router.route("/passwordReset/:user/:token").post(async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     await resetUser.update({ password: hashedPassword });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send(err.message);
+  }
+  res.sendStatus(200);
+});
+
+router.route("/passwordForgot").post(async (req, res) => {
+  const resetUser = await Users.findOne({ where: { email: req.body.email } });
+  if (resetUser === null) {
+    return res.sendStatus(404);
+  }
+  const secret = process.env.RESET_TOKEN_SECRET + resetUser.get("password"); //generates a new secret unique to a user.
+  const payload = { username: resetUser.get("user_id") };
+  const token = jwt.sign(payload, secret, { expiresIn: "30m" }); //users get 30 mins to reset their account
+
+  let resetLink = null;
+  if (process.env.ENV === "DEV") {
+    resetLink = `http://localhost:8080/passwordReset/${resetUser.get(
+      "user_id"
+    )}?token=${token}`;
+  } else {
+    resetLink = `https://wod-char-maker.herokuapp.com/passwordReset/${resetUser.get(
+      "user_id"
+    )}?token=${token}`;
+  }
+
+  mailer.sendResetEmail(req.body.email, resetUser.get("username"), resetLink);
+  res.sendStatus(200);
+});
+
+router.route("/activateAccount/:username/:token").post(async (req, res) => {
+  console.log(req.params);
+
+  const activationUser = await Users.findOne({
+    where: { username: req.params.username },
+  });
+  if (activationUser === null) {
+    return sendStatus(404);
+  }
+  console.log(activationUser);
+
+  const secret =
+    process.env.ACTIVATION_TOKEN_SECRET + activationUser.get("password");
+  try {
+    const payload = jwt.verify(req.params.token, secret);
+
+    await activationUser.update({ activated: 1 });
   } catch (err) {
     console.log(err.message);
     return res.status(400).send(err.message);
