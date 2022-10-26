@@ -216,16 +216,12 @@ router.route("/passwordForgot").post(async (req, res) => {
 });
 
 router.route("/activateAccount/:username/:token").post(async (req, res) => {
-  console.log(req.params);
-
   const activationUser = await Users.findOne({
     where: { username: req.params.username },
   });
   if (activationUser === null) {
     return sendStatus(404);
   }
-  console.log(activationUser);
-
   const secret =
     process.env.ACTIVATION_TOKEN_SECRET + activationUser.get("password");
   try {
