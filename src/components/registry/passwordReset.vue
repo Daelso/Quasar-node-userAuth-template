@@ -91,7 +91,7 @@ export default {
             })
           )
           .then(() => {
-            router.push({ name: "home" });
+            router.push({ name: "login" });
           })
           .catch(() =>
             $q.notify({

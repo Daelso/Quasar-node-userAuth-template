@@ -26,7 +26,7 @@
       />
 
       <div>
-        <q-btn label="Submit" type="submit" color="primary" />
+        <q-btn label="Log in" type="submit" color="primary" />
         <q-btn
           label="Reset Password"
           type="reset"
@@ -50,6 +50,7 @@ export default {
     const axios = require("axios");
     const email = ref(null);
     const password = ref(null);
+    const router = useRouter();
 
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
@@ -79,6 +80,9 @@ export default {
               message: "Logged in, welcome back!",
             })
           )
+          .then(() => {
+            router.push({ name: "home" });
+          })
           .catch(() =>
             $q.notify({
               color: "red-5",

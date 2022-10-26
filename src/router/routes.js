@@ -28,6 +28,11 @@ const routes = [
         path: "passwordReset/:user",
         component: () => import("pages/registry/passwordReset.vue"),
       },
+      {
+        name: "activateAccount",
+        path: "activateAccount",
+        component: () => import("pages/registry/activateAccount.vue"),
+      },
     ],
   },
 

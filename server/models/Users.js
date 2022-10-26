@@ -36,6 +36,10 @@ const Users = db.sequelize.define("users", {
     type: Sequelize.DATE,
     allowNull: false,
   },
+  activated: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+  },
 });
 
 module.exports = Users;
