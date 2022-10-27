@@ -1,7 +1,13 @@
 <template>
   <router-view />
 </template>
-
+<style>
+body {
+  background-color: #121212;
+  color: #c4171d;
+  font-family: monospace;
+}
+</style>
 <script>
 import { defineComponent } from "vue";
 import axios from "axios";

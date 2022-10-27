@@ -4,7 +4,8 @@
       label="View Current User"
       v-on:click="onSubmit()"
       type="submit"
-      color="primary"
+      color="secondary"
+      text-color="primary"
     />
   </div>
 </template>
