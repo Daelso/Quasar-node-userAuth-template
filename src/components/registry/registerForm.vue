@@ -3,6 +3,7 @@
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         filled
+        bg-color="white"
         v-model="userName"
         label="Your username *"
         hint="What do we call you?"
@@ -21,6 +22,7 @@
         filled
         v-model="email"
         type="email"
+        bg-color="white"
         label="Your email *"
         hint="Make sure you will have long term access for account recovery!"
         lazy-rules
@@ -39,6 +41,7 @@
         filled
         v-model="password"
         type="password"
+        bg-color="white"
         label="Your password *"
         hint="Never share this with anyone!"
         lazy-rules
@@ -57,6 +60,7 @@
         filled
         v-model="passwordVerify"
         type="password"
+        bg-color="white"
         label="Type password again *"
         hint="Just making sure..."
         lazy-rules
@@ -74,6 +78,7 @@
         filled
         type="number"
         v-model="age"
+        bg-color="white"
         hint="Strictly 18+"
         label="Your age *"
         lazy-rules
@@ -88,6 +93,7 @@
       <q-toggle
         v-model="accept"
         label="I hereby certify that I have read, understand and agree to the terms of use and privacy policy."
+        color="white"
       />
 
       <div>
@@ -95,7 +101,7 @@
         <q-btn
           label="Reset"
           type="reset"
-          color="primary"
+          color="secondary"
           flat
           class="q-ml-sm"
         />
@@ -160,7 +166,8 @@ export default {
                 color: "green-4",
                 textColor: "white",
                 icon: "cloud_done",
-                message: "Account successfully created!",
+                message:
+                  "Account successfully created, an activation email has been sent!",
               })
             )
             .then(() => {
