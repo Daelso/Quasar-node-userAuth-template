@@ -6,6 +6,7 @@
       type="submit"
       color="secondary"
       text-color="primary"
+      style="font-weight: bold"
     />
   </div>
 </template>
