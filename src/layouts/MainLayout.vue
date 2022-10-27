@@ -12,12 +12,14 @@
         />
 
         <q-toolbar-title style="font-family: TMUnicorn">
-          SchreckNet
+          <a href="/"> SchreckNet </a>
         </q-toolbar-title>
 
-        <q-avatar @click="toggleRightDrawer">
-          <img src="../assets/images/Nosfer_logo.png" />
-        </q-avatar>
+        <q-item clickable>
+          <q-avatar @click="toggleRightDrawer">
+            <img src="../assets/images/Nosfer_logo.png" />
+          </q-avatar>
+        </q-item>
       </q-toolbar>
     </q-header>
 
@@ -63,6 +65,16 @@
     </q-footer>
   </q-layout>
 </template>
+
+<style>
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
+</style>
 
 <script>
 import { defineComponent, ref } from "vue";
