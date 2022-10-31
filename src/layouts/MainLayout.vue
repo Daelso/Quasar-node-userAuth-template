@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title style="font-family: TMUnicorn">
-          <a href="/"> SchreckNet </a>
+          <router-link to="/">SchreckNet</router-link>
         </q-toolbar-title>
 
         <q-item v-if="!logInCheck" clickable>
@@ -68,8 +68,14 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="text-white" style="background-color: #121212">
-      Gaming?
+    <q-footer
+      class="bg-transparent text-white text-center"
+      style="opacity: 35%"
+    >
+      <router-link to="/privacy">Privacy</router-link> |
+      <router-link to="/terms">Terms of Use</router-link> |
+      <router-link to="/contact">Contact</router-link> |
+      <router-link to="/dark-pack">Dark Pack</router-link>
     </q-footer>
   </q-layout>
 </template>
@@ -187,8 +193,6 @@ export default defineComponent({
       .then((resp) => {
         return resp.data;
       });
-
-    console.log(this.currentUser);
   },
 });
 </script>

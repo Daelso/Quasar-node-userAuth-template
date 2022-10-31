@@ -3,6 +3,7 @@
     <q-form @submit="onSubmit" @reset="resetRedirect" class="q-gutter-md">
       <q-input
         filled
+        bg-color="white"
         v-model="email"
         type="email"
         label="Your email *"
@@ -20,6 +21,7 @@
 
       <q-input
         filled
+        bg-color="white"
         v-model="password"
         type="password"
         label="Your password *"
@@ -30,7 +32,7 @@
         <q-btn
           label="Reset Password"
           type="reset"
-          color="primary"
+          color="secondary"
           flat
           class="q-ml-sm"
         />
