@@ -81,7 +81,11 @@ export default {
             })
           )
           .then(() => {
-            router.push({ name: "home" });
+            if (window.location.href.includes("localhost")) {
+              window.location.replace("http://localhost:8080");
+            } else {
+              window.location.replace("window.location.origin");
+            }
           })
           .catch(() =>
             $q.notify({

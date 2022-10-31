@@ -15,7 +15,15 @@
           <a href="/"> SchreckNet </a>
         </q-toolbar-title>
 
-        <q-item clickable>
+        <q-item v-if="!logInCheck" clickable>
+          <a href="/login"> Login </a>
+        </q-item>
+
+        <q-item v-if="!logInCheck" clickable>
+          <a href="/register"> Register </a>
+        </q-item>
+
+        <q-item v-if="logInCheck" clickable>
           <q-avatar @click="toggleRightDrawer">
             <img src="../assets/images/Nosfer_logo.png" />
           </q-avatar>
@@ -135,8 +143,12 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false);
     const rightDrawerOpen = ref(false);
+    let currentUser = ref(false);
+    let loggedIn = ref(false);
 
     return {
+      currentUser,
+      loggedIn,
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
@@ -147,6 +159,36 @@ export default defineComponent({
         rightDrawerOpen.value = !rightDrawerOpen.value;
       },
     };
+  },
+
+  computed: {
+    logInCheck() {
+      if (this.currentUser != false) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+
+  async mounted() {
+    const axios = require("axios");
+
+    let baseUrl = "";
+    if (window.location.href.includes("localhost")) {
+      baseUrl = "http://localhost:5000";
+    } else {
+      baseUrl = window.location.origin;
+    }
+    this.currentUser = await axios
+      .get(baseUrl + "/user/currentUser", {
+        withCredentials: true,
+      })
+      .then((resp) => {
+        return resp.data;
+      });
+
+    console.log(this.currentUser);
   },
 });
 </script>

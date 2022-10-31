@@ -28,14 +28,15 @@ export default {
     }
 
     return {
-      onSubmit() {
-        axios
-          .get(baseUrl + "/posts", {
+      async onSubmit() {
+        let meme = await axios
+          .get(baseUrl + "/user/currentUser", {
             withCredentials: true,
           })
           .then((resp) => {
-            console.log(resp.data);
+            return resp.data;
           });
+        console.log(meme);
       },
     };
   },

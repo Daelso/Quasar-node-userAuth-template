@@ -15,6 +15,10 @@ const mailer = require("../mailer");
 
 //Route is base/user/
 
+router.route("/currentUser").get(lib.authenticateToken, (req, res) => {
+  res.json(req.currentUser);
+});
+
 router.route("/users").get(async (req, res) => {
   Users.findAll()
     .then((users) => {
