@@ -194,5 +194,10 @@ export default {
       },
     };
   },
+  data() {
+    return {
+      user: this.curUser,
+    };
+  },
 };
 </script>
