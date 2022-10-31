@@ -7,6 +7,7 @@
     <q-form @submit="onSubmit" class="q-gutter-md">
       <q-input
         filled
+        bg-color="white"
         v-model="email"
         type="email"
         label="Your email *"

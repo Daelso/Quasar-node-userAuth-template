@@ -33,6 +33,16 @@ const routes = [
         path: "activateAccount",
         component: () => import("pages/registry/activateAccount.vue"),
       },
+      {
+        name: "privacyPolicy",
+        path: "privacy",
+        component: () => import("pages/policy/privacyPolicy.vue"),
+      },
+      {
+        name: "termsofuse",
+        path: "terms",
+        component: () => import("pages/policy/termsOfUse.vue"),
+      },
     ],
   },
 
