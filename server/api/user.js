@@ -62,7 +62,7 @@ router.route("/register").post(async (req, res) => {
   }
 });
 
-router.route("/login").post(async (req, res) => {
+router.route("/login").post(lib.limiter, async (req, res) => {
   //Authenticate users
   const user = await Users.findOne({ where: { email: req.body.email } });
 

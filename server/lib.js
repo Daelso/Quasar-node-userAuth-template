@@ -1,6 +1,13 @@
 const jwt = require("jsonwebtoken");
+const rateLimit = require("express-rate-limit");
 
 //Other imports above
+
+const limiter = rateLimit({
+  windowMs: 900000, //15 min
+  max: 5, //login attempts
+  message: "Rate limit exceeded, please wait 15 minutes and try again!",
+});
 
 const authenticateToken = (req, res, next) => {
   let token = req.cookies.access;
@@ -45,4 +52,4 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = { authenticateToken };
+module.exports = { authenticateToken, limiter };
