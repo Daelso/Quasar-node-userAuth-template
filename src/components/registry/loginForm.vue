@@ -53,6 +53,7 @@ export default {
     const email = ref(null);
     const password = ref(null);
     const router = useRouter();
+    let loginAttempt = 0;
 
     let baseUrl = "";
     if (window.location.href.includes("localhost")) {
@@ -89,14 +90,24 @@ export default {
               window.location.replace("window.location.origin");
             }
           })
-          .catch(() =>
-            $q.notify({
-              color: "red-5",
-              textColor: "white",
-              icon: "warning",
-              message: "Incorrect email or password!",
-            })
-          );
+          .catch(() => {
+            loginAttempt++;
+            if (loginAttempt <= 5) {
+              $q.notify({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: `Incorrect email or password! Login attempt ${loginAttempt}/5`,
+              });
+            } else {
+              $q.notify({
+                color: "red-5",
+                textColor: "white",
+                icon: "warning",
+                message: `Login attempts exceeded, please try again in fifteen minutes. Try resetting your password if you continue to fail to login.`,
+              });
+            }
+          });
       },
     };
   },
