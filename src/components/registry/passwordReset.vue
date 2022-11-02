@@ -5,8 +5,9 @@
       <q-input
         filled
         v-model="password"
+        bg-color="white"
         type="password"
-        label="Your password *"
+        label="Your new password *"
         hint="Never share this with anyone!"
         lazy-rules
         :rules="[
@@ -24,6 +25,7 @@
         filled
         v-model="passwordVerify"
         type="password"
+        bg-color="white"
         label="Type password again *"
         hint="Just making sure..."
         lazy-rules
@@ -43,6 +45,12 @@
     </q-form>
   </div>
 </template>
+
+<style>
+.q-field__messages {
+  color: white;
+}
+</style>
 
 <script>
 import { useQuasar } from "quasar";
