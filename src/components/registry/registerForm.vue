@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+    <q-form @submit="onSubmit" class="q-gutter-md">
       <q-input
         filled
         bg-color="white"
@@ -97,14 +97,7 @@
       />
 
       <div>
-        <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="secondary"
-          flat
-          class="q-ml-sm"
-        />
+        <q-btn label="Create an account" type="submit" color="primary" />
       </div>
     </q-form>
   </div>
@@ -188,15 +181,6 @@ export default {
               })
             );
         }
-      },
-
-      onReset() {
-        userName.value = null;
-        email.value = null;
-        password.value = null;
-        passwordVerify.value = null;
-        age.value = null;
-        accept.value = false;
       },
     };
   },
