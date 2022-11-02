@@ -16,11 +16,11 @@
         </q-toolbar-title>
 
         <q-item v-if="!logInCheck" clickable>
-          <a href="/login"> Login </a>
+          <router-link to="/login">Login</router-link> |
         </q-item>
 
         <q-item v-if="!logInCheck" clickable>
-          <a href="/register"> Register </a>
+          <router-link to="/register">Register</router-link> |
         </q-item>
 
         <q-item v-if="logInCheck" clickable>
