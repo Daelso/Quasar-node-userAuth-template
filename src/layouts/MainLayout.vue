@@ -39,11 +39,7 @@
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink />
       </q-list>
     </q-drawer>
 
@@ -54,13 +50,9 @@
       style="background-color: #171a1e; border-color: red"
     >
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> Profile Links </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <ProfileLinks />
       </q-list>
     </q-drawer>
 
@@ -93,13 +85,15 @@ a:active {
 <script>
 import { defineComponent, ref } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
+import profileLinks from "components/profileLinks.vue";
+import ProfileLinks from "components/profileLinks.vue";
 
 const linksList = [
   {
     title: "Docs",
     caption: "quasar.dev",
     icon: "school",
-    link: "https://quasar.dev",
+    link: "login",
   },
   {
     title: "Github",
@@ -144,6 +138,7 @@ export default defineComponent({
 
   components: {
     EssentialLink,
+    ProfileLinks,
   },
 
   setup() {
