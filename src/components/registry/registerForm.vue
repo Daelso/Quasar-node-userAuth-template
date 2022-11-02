@@ -110,6 +110,12 @@
   </div>
 </template>
 
+<style>
+.q-field__messages {
+  color: white;
+}
+</style>
+
 <script>
 import { useQuasar } from "quasar";
 import { ref } from "vue";

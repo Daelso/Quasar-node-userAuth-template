@@ -43,6 +43,11 @@ const routes = [
         path: "terms",
         component: () => import("pages/policy/termsOfUse.vue"),
       },
+      {
+        name: "contact",
+        path: "contact",
+        component: () => import("pages/policy/contact.vue"),
+      },
     ],
   },
 

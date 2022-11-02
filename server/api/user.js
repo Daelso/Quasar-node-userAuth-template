@@ -239,4 +239,10 @@ router.route("/activateAccount/:username/:token").post(async (req, res) => {
   res.sendStatus(200);
 });
 
+router.route("/sendContactEmail").post(async (req, res) => {
+  console.log(req.body);
+  mailer.sendContactForm(req.body);
+  res.sendStatus(200);
+});
+
 module.exports = router; //Exports our routes
