@@ -37,6 +37,13 @@
           class="q-ml-sm"
         />
       </div>
+      <q-btn
+        label="Create an account"
+        @click="this.registerRedirect()"
+        color="secondary"
+        flat
+        class="q-ml-sm"
+      />
     </q-form>
   </div>
 </template>
@@ -116,6 +123,9 @@ export default {
     return {
       resetRedirect() {
         router.push({ name: "passwordForgot" });
+      },
+      registerRedirect() {
+        router.push({ name: "register" });
       },
     };
   },
