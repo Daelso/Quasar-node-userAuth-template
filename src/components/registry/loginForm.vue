@@ -94,7 +94,7 @@ export default {
             if (window.location.href.includes("localhost")) {
               window.location.replace("http://localhost:8080");
             } else {
-              window.location.replace("window.location.origin");
+              window.location.replace(window.location.origin);
             }
           })
           .catch(() => {
