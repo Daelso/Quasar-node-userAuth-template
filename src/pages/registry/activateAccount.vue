@@ -23,9 +23,6 @@ export default defineComponent({
     const token = router.currentRoute._value.query.token;
     const username = router.currentRoute._value.query.username;
 
-    console.log(username);
-    console.log(token);
-
     const activateAccount = () => {
       axios
         .post(
@@ -44,7 +41,7 @@ export default defineComponent({
           })
         )
         .then(() => {
-          router.push({ name: "home" });
+          router.push({ name: "login" });
         })
         .catch(() =>
           $q.notify({

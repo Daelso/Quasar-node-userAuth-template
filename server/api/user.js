@@ -65,7 +65,7 @@ router.route("/register").post(async (req, res) => {
 router.route("/login").post(lib.limiter, async (req, res) => {
   //Authenticate users
   const user = await Users.findOne({ where: { email: req.body.email } });
-
+  console.log(user.activated);
   if (user == null) {
     return res.status(400).send("Cannot find user!");
   }
@@ -76,6 +76,7 @@ router.route("/login").post(lib.limiter, async (req, res) => {
         username: user.username,
         email: user.email,
         age: user.age,
+        activated: user.activated,
       };
       const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "5m",
@@ -127,6 +128,7 @@ router.route("/token").post(async (req, res) => {
           email: user.email,
           age: user.age,
           id: user.id,
+          activated: user.activated,
         },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "5m" }
@@ -236,13 +238,45 @@ router.route("/activateAccount/:username/:token").post(async (req, res) => {
     console.log(err.message);
     return res.status(400).send(err.message);
   }
+  res.clearCookie("access");
+  res.clearCookie("refresh");
   res.sendStatus(200);
 });
 
-router.route("/sendContactEmail").post(async (req, res) => {
-  console.log(req.body);
-  mailer.sendContactForm(req.body);
-  res.sendStatus(200);
+router.route("/sendContactEmail").post(lib.limiter, async (req, res) => {
+  try {
+    mailer.sendContactForm(req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
 });
+
+router
+  .route("/resendActivation")
+  .post(lib.authenticateToken, async (req, res) => {
+    const activationUser = await Users.findOne({
+      where: { username: req.currentUser.username },
+    });
+    const secret =
+      process.env.ACTIVATION_TOKEN_SECRET + activationUser.password; //generates a new secret unique to a user.
+    const payload = { username: req.currentUser.username };
+    const token = jwt.sign(payload, secret, { expiresIn: "7d" }); //activation good for a week
+    let activateLink = null;
+    if (process.env.ENV === "DEV") {
+      activateLink = `http://localhost:8080/activateAccount?token=${token}&username=${req.currentUser.username}`;
+    } else {
+      activateLink = `https://wod-char-maker.herokuapp.com/activateAccount?token=${token}&username=${req.currentUser.username}`;
+    }
+    try {
+      mailer.sendActivationEmail(
+        req.currentUser.email,
+        req.currentUser.username,
+        activateLink
+      );
+    } catch (err) {
+      return res.status(400).send(err.message);
+    }
+  });
 
 module.exports = router; //Exports our routes

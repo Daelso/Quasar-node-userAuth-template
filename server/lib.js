@@ -27,6 +27,7 @@ const authenticateToken = (req, res, next) => {
               email: user.email,
               age: user.age,
               id: user.id,
+              activated: user.activated,
             },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "5m" }
@@ -46,7 +47,6 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.send(err);
-    console.log(user);
     req.currentUser = user;
     next();
   });
