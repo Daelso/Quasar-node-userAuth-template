@@ -65,7 +65,7 @@ router.route("/register").post(async (req, res) => {
 router.route("/login").post(lib.limiter, async (req, res) => {
   //Authenticate users
   const user = await Users.findOne({ where: { email: req.body.email } });
-  console.log(user.activated);
+
   if (user == null) {
     return res.status(400).send("Cannot find user!");
   }
@@ -148,7 +148,6 @@ router.route("/token").post(async (req, res) => {
 router.route("/logout").post((req, res) => {
   res.clearCookie("refresh");
   res.clearCookie("access");
-  console.log("cookies cleared");
   res.sendStatus(204);
 });
 
