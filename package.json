@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A template for vue-based user authentication",
   "productName": "Login System",
-  "author": "Daelso",
+  "author": "Chase",
   "private": true,
   "scripts": {
     "dev": "quasar dev",
